@@ -1,0 +1,21 @@
+// Cloudflare Workers static assets — serves the pre-built www/dist/.
+//
+// The site is still built locally (`npm run build` fetches the CMS at build
+// time), and the built dist/ is committed. .github/workflows/deploy-www.yml
+// runs `wrangler deploy` on every push to main that changes it.
+{
+  "name": "thisisahousegallery",
+  "compatibility_date": "2026-10-20",
+  "assets": {
+    "directory": "./dist"
+  },
+  // Live at thisisahousegallery.workers.dev until the custom domain is
+  // attached. Add it here, not in the dashboard, so the config stays the
+  // source of truth:
+  //
+  //   "routes": [
+  //     { "pattern": "thisisahousegallery.com", "custom_domain": true },
+  //     { "pattern": "www.thisisahousegallery.com", "custom_domain": true }
+  //   ],
+  "workers_dev": true
+}

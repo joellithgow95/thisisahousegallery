@@ -1,6 +1,5 @@
 # Node / Astro — ignore build output and deps
 node_modules/
-dist/
 .astro/
 dev-dist/
 
@@ -12,3 +11,8 @@ dev-dist/
 !src/lib/
 !src/lib/**
 dist-fresh/
+
+# dist/ is committed: it's what the Cloudflare deploy workflow ships (the build
+# needs the local CMS, so CI can't produce it). The root .gitignore ignores
+# dist/ for the Python side, so re-include it here.
+!dist/
