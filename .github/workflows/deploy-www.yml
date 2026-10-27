@@ -1,0 +1,39 @@
+# Deploy the static site in www/ to Cloudflare Workers static assets.
+#
+# The Astro build needs the CMS, which only runs locally, so this workflow
+# does not build: it deploys the www/dist/ that was built and committed.
+# Production only, no branch previews.
+name: Deploy www
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'www/dist/**'
+      - 'www/wrangler.jsonc'
+      - '.github/workflows/deploy-www.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-www
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check dist/ was committed
+        run: test -f www/dist/index.html
+
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: www
+          wranglerVersion: '4.152.0'
+          command: deploy
