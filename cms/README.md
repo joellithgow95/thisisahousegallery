@@ -11,25 +11,19 @@ the multi-tenant seam and the public read-only `/v1` API.
 
 ## Getting started
 
-### 1. Start Postgres
-
-```bash
-docker compose up -d db
-```
-
-### 2. Install dependencies
+### 1. Install dependencies
 
 ```bash
 uv sync
 ```
 
-### 3. Apply migrations
+### 2. Apply migrations
 
 ```bash
 uv run alembic upgrade head
 ```
 
-### 4. Run the dev server
+### 3. Run the dev server
 
 ```bash
 uv run uvicorn app.main:app --reload
@@ -61,3 +55,27 @@ if your shell's `PYTHONPATH` points at another venv.
 ## Environment
 
 Copy `.env.example` to `.env` and adjust as needed.
+
+## Database and backups
+
+The database is a single SQLite file, `cms.db` (created by the migrations).
+[Litestream](https://litestream.io) replicates it continuously to the
+`housegallery-cms` S3 bucket under `litestream/`; see `litestream.yml`.
+
+```bash
+litestream replicate -config litestream.yml       # run alongside the CMS
+litestream restore -config litestream.yml cms.db  # rebuild from S3
+```
+
+### Moving data off the old Postgres
+
+One-off, run on the machine that holds the Postgres container:
+
+```bash
+uv sync --extra migrate
+uv run alembic upgrade head            # creates an empty cms.db
+uv run python -m scripts.copy_postgres_to_sqlite \
+    postgresql+psycopg://cms:cms@localhost:5432/cms sqlite:///./cms.db
+```
+
+It refuses a non-empty target and compares row counts at the end.

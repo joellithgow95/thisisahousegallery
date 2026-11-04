@@ -33,8 +33,8 @@ def upgrade() -> None:
     sa.Column('date', sa.DateTime(), nullable=True),
     sa.Column('price', sa.String(length=100), nullable=False),
     sa.Column('artifacts', sa.JSON(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
-    sa.Column('updated_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.func.now(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), server_default=sa.func.now(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('slug')
     )
@@ -50,8 +50,8 @@ def upgrade() -> None:
     sa.Column('width', sa.Integer(), nullable=False),
     sa.Column('height', sa.Integer(), nullable=False),
     sa.Column('file_size', sa.BigInteger(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
-    sa.Column('updated_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.func.now(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), server_default=sa.func.now(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_images_tenant_id'), 'images', ['tenant_id'], unique=False)
@@ -59,7 +59,7 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('slug', sa.String(length=100), nullable=False),
     sa.Column('name', sa.String(length=200), nullable=False),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.func.now(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('slug')
     )
@@ -68,7 +68,7 @@ def upgrade() -> None:
     sa.Column('tenant_id', sa.Integer(), nullable=True),
     sa.Column('name', sa.String(length=200), nullable=False),
     sa.Column('slug', sa.String(length=220), nullable=False),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.func.now(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('slug')
     )
@@ -84,8 +84,8 @@ def upgrade() -> None:
     sa.Column('email', sa.String(length=320), nullable=False),
     sa.Column('birth_year', sa.Integer(), nullable=True),
     sa.Column('socials', sa.JSON(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
-    sa.Column('updated_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.func.now(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), server_default=sa.func.now(), nullable=False),
     sa.ForeignKeyConstraint(['profile_image_id'], ['images.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('slug')
@@ -123,8 +123,8 @@ def upgrade() -> None:
     sa.Column('listing_title', sa.String(length=200), nullable=False),
     sa.Column('listing_summary', sa.Text(), nullable=False),
     sa.Column('listing_image_id', sa.Integer(), nullable=True),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
-    sa.Column('updated_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.func.now(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), server_default=sa.func.now(), nullable=False),
     sa.ForeignKeyConstraint(['listing_image_id'], ['images.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('slug')
@@ -138,7 +138,7 @@ def upgrade() -> None:
     sa.Column('width', sa.Integer(), nullable=False),
     sa.Column('height', sa.Integer(), nullable=False),
     sa.Column('file_size', sa.BigInteger(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.func.now(), nullable=False),
     sa.ForeignKeyConstraint(['image_id'], ['images.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )

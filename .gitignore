@@ -293,3 +293,6 @@ housegallery/static_src/webpack_bundles/
 
 # Hermes agent working docs
 .hermes/
+
+# SQLite database and its WAL files
+cms/cms.db*

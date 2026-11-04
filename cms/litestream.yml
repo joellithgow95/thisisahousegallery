@@ -1,0 +1,14 @@
+# Continuous SQLite replication to the housegallery-cms S3 bucket.
+#
+#   litestream replicate -config litestream.yml      # run next to the CMS
+#   litestream restore -config litestream.yml cms.db # rebuild from S3
+#
+# Credentials come from the standard AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY
+# environment variables. Keep the prefix separate from the media files.
+dbs:
+  - path: ./cms.db
+    replicas:
+      - type: s3
+        bucket: housegallery-cms
+        path: litestream/cms.db
+        region: us-west-2
