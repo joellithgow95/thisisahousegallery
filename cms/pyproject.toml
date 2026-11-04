@@ -7,7 +7,6 @@ dependencies = [
     "fastapi>=0.115",
     "uvicorn[standard]>=0.30",
     "sqlalchemy>=2.0",
-    "psycopg[binary]>=3.2",
     "alembic>=1.13",
     "sqladmin>=0.20",
     "pydantic-settings>=2.2",
@@ -16,6 +15,10 @@ dependencies = [
     "boto3>=1.43.66",
     "python-dotenv>=1.2.2",
 ]
+
+[project.optional-dependencies]
+# Only for scripts/copy_postgres_to_sqlite.py, the one-off move off Postgres.
+migrate = ["psycopg[binary]>=3.2"]
 
 [build-system]
 requires = ["hatchling"]

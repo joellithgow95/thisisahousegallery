@@ -6,7 +6,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    database_url: str = "postgresql+psycopg://cms:cms@localhost:5432/cms"
+    database_url: str = "sqlite:///./cms.db"
     debug: bool = False
     site_title: str = "This is a House Gallery"
     media_storage: str = "local"
